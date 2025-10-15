@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CatDto } from './cat.dto';
 import { Cat } from './cat.interface';
@@ -11,6 +19,7 @@ export class CatsController {
   async findAll(): Promise<Cat[]> {
     return this.catsService.findAll();
   }
+
   @Post()
   create(@Body() createCatDto: CatDto) {
     this.catsService.create(createCatDto);
@@ -24,5 +33,10 @@ export class CatsController {
       age: 20,
       breed: 'hello world',
     };
+  }
+
+  @Get('find/test')
+  findSome() {
+    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 }
