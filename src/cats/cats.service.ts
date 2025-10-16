@@ -1,5 +1,6 @@
 import { Cat } from './cat.interface';
 import { Injectable } from '@nestjs/common';
+import { sleep } from '../util/common';
 
 @Injectable()
 export class CatsService {
@@ -14,7 +15,9 @@ export class CatsService {
   create(cat: Cat) {
     this.cats.push(cat);
   }
-  findAll(): Cat[] {
+  async findAll(): Promise<Cat[]> {
+    // 睡眠三秒
+    await sleep(3000);
     return this.cats;
   }
 }

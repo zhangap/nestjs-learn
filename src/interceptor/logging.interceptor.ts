@@ -13,11 +13,15 @@ export class LoggingInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
-    console.log('Logging Interceptor Before...');
+    console.log(`${context.getHandler().name}方法被执行Before`);
 
     const now = Date.now();
     return next
       .handle()
-      .pipe(tap(() => console.log(`执行耗时：${Date.now() - now}ms`)));
+      .pipe(
+        tap(() =>
+          console.log(`LoggingInterceptor-执行耗时：${Date.now() - now}ms`),
+        ),
+      );
   }
 }

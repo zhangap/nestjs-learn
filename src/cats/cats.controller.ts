@@ -22,8 +22,9 @@ export class CatsController {
   constructor(private catsService: CatsService) {}
 
   @Get('list')
-  findAll(): Cat[] {
-    return this.catsService.findAll();
+  async findAll(): Promise<Cat[]> {
+    console.log('findAll被执行' + Date.now());
+    return await this.catsService.findAll();
   }
 
   //对象验证器

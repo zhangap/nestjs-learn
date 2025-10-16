@@ -3,13 +3,21 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { HttpExceptionFilter } from './filters/http-exception.filters';
 import { LoggingInterceptor } from './interceptor/logging.interceptor';
+import { ExceptionInterceptor } from './interceptor/exclude.null.interceptor';
+import { TimeoutInterceptor } from './interceptor/timeout.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['log', 'warn', 'error'],
   });
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalInterceptors(
+    ...[
+      new LoggingInterceptor(),
+      new ExceptionInterceptor(),
+      new TimeoutInterceptor(),
+    ],
+  );
   // 允许跨域
   app.enableCors();
   const logger = new Logger();
