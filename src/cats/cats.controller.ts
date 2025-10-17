@@ -16,13 +16,15 @@ import { Cat } from './cat.interface';
 import * as ZodValidationPipe from '../pipe/ZodValidationPipe';
 import { ValidationPipe } from '../pipe/ValidationPipe';
 import { ClassValidateCatDto } from './classValidate.cat.dto';
+import { User } from '../decorator/user.decorator';
 
 @Controller('cats')
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
   @Get('list')
-  async findAll(): Promise<Cat[]> {
+  async findAll(@User() user: any): Promise<Cat[]> {
+    console.log(user);
     console.log('findAll被执行' + Date.now());
     return await this.catsService.findAll();
   }

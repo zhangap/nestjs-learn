@@ -19,7 +19,7 @@ async function bootstrap() {
     ],
   );
   // 允许跨域
-  app.enableCors();
+  // app.enableCors();
   const logger = new Logger();
   // logger.warn('这个是警告日志');
   // logger.error('这个是错误日志');
