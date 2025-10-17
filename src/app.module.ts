@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { CatsModule } from './cats/cats.module';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { AuthGuard } from './AuthGurad';
+import { ConfigModule } from './config/config.module';
 
 @Module({
-  imports: [CatsModule],
+  imports: [CatsModule, ConfigModule.register({ folder: './config' })],
   controllers: [AppController],
   providers: [
     AppService,
