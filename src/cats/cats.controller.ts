@@ -74,4 +74,10 @@ export class CatsController {
   findSome() {
     throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
+
+  //模块之间相互引用的例子
+  @Get('config')
+  getConfig(): string {
+    return this.catsService.getConfig();
+  }
 }
