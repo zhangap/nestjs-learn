@@ -4,9 +4,12 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Inject,
   Param,
   ParseIntPipe,
   Post,
+  Req,
+  Res,
   UsePipes,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
@@ -17,15 +20,20 @@ import * as ZodValidationPipe from '../pipe/ZodValidationPipe';
 import { ValidationPipe } from '../pipe/ValidationPipe';
 import { ClassValidateCatDto } from './classValidate.cat.dto';
 import { User } from '../decorator/user.decorator';
+import * as svgCaptcha from 'svg-captcha';
 
 @Controller('cats')
 export class CatsController {
-  constructor(private catsService: CatsService) {}
+  constructor(
+    private catsService: CatsService,
+    @Inject('fox') private readonly fox: number,
+  ) {}
 
   @Get('list')
   async findAll(@User() user: any): Promise<Cat[]> {
     console.log(user);
     console.log('findAll被执行' + Date.now());
+    console.log(this.fox);
     return await this.catsService.findAll();
   }
 
@@ -79,5 +87,34 @@ export class CatsController {
   @Get('config')
   getConfig(): string {
     return this.catsService.getConfig();
+  }
+
+  //生成验证码
+  @Get('getCaptcha')
+  createCaptcha(@Req() req: any, @Res() res: any) {
+    const captcha = svgCaptcha.create({
+      size: 4,
+      fontSize: 50,
+      width: 100,
+      height: 34,
+      background: '#ccc',
+    });
+    req.session.captcha = captcha.text;
+    res.type('image/svg+xml');
+    res.send(captcha.data);
+  }
+  //注册
+  @Post('register')
+  register(@Req() req: any, @Body() body: any) {
+    console.log(req.session.captcha);
+    if (req?.session?.captcha.toLowerCase() === body?.captcha?.toLowerCase()) {
+      return {
+        message: '注册成功',
+      };
+    } else {
+      return {
+        message: '注册失败',
+      };
+    }
   }
 }

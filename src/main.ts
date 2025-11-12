@@ -5,11 +5,21 @@ import { HttpExceptionFilter } from './filters/http-exception.filters';
 import { LoggingInterceptor } from './interceptor/logging.interceptor';
 import { ExceptionInterceptor } from './interceptor/exclude.null.interceptor';
 import { TimeoutInterceptor } from './interceptor/timeout.interceptor';
-
+import session from 'express-session';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['log', 'warn', 'error'],
   });
+  app.use(
+    session({
+      secret: 'fox',
+      name: 'nestjs-fox',
+      rolling: true,
+      cookie: {
+        maxAge: 1000 * 60 * 60,
+      },
+    }),
+  );
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(
     ...[
