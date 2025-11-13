@@ -5,9 +5,14 @@ import { CatsModule } from './cats/cats.module';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { AuthGuard } from './AuthGurad';
 import { ConfigModule } from './config/config.module';
+import { ExampleModule } from './example/example.module';
 
 @Module({
-  imports: [CatsModule, ConfigModule.register({ folder: './config' })],
+  imports: [
+    CatsModule,
+    ConfigModule.register({ folder: './config' }),
+    ExampleModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
