@@ -1,5 +1,5 @@
 import { ExampleServices } from './example.services';
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 
 @Controller('example')
 export class ExampleController {
@@ -8,5 +8,19 @@ export class ExampleController {
   @Get('init')
   init() {
     return this.exampleService.getHello();
+  }
+
+  @Post()
+  addExample() {
+    return this.exampleService.add();
+  }
+
+  @Get('range/:num')
+  generateArr(@Param('num') num: number) {
+    return {
+      code: 0,
+      msg: '请求成功',
+      data: this.exampleService.generateArr(num),
+    };
   }
 }

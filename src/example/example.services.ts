@@ -26,4 +26,23 @@ export class ExampleServices {
   getHello() {
     return 'hello ExampleServices';
   }
+  add() {
+    return {
+      code: 0,
+      data: {},
+      message: 'example added success',
+    };
+  }
+
+  /**
+   * 如果num是5，产生1-5的数字，如果是6，产生1-6的数字
+   * @param num
+   */
+  generateArr(num: number): Array<string> {
+    const result: Array<string> = [];
+    for (let i = 1; i <= num; i++) {
+      result.push(`${i}`);
+    }
+    return result;
+  }
 }
